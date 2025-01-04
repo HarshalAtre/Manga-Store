@@ -1,14 +1,36 @@
 import { Loader } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Suspense } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { Experience } from "./components/Experience";
 import { UI } from "./components/UI";
 import { currentBookAtom, books } from "./components/UI";
 import { useAtom } from "jotai";
+import { useProgress } from "@react-three/drei";
 // import coverImage from '../public/textures/book-back.jpg';
 
 function App() {
   const [currentBook] = useAtom(currentBookAtom);
+  const { progress } = useProgress();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (progress === 100) {
+      // Add a small delay to ensure everything is ready
+      const timeout = setTimeout(() => setIsLoading(false), 500);
+      return () => clearTimeout(timeout);
+    }
+  }, [progress]);
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center bg-black text-white">
+        <div className="text-center">
+          <h2 className="text-2xl mb-4">Loading Assets</h2>
+          <p>{Math.round(progress)}%</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>

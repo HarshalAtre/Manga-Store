@@ -85,11 +85,22 @@ const pageMaterials = [
   }),
 ];
 
-pages.forEach((page) => {
-  useTexture.preload(`/textures/${page.front}.jpg`);
-  useTexture.preload(`/textures/${page.back}.jpg`);
-//   useTexture.preload(`/textures/book-cover-roughness.jpg`);
-});
+// Preload all book textures at once
+const preloadAllTextures = () => {
+  books.forEach(book => {
+    // Preload front and back covers
+    useTexture.preload(`/textures/${book.folder}/${book.frontCover}.jpg`);
+    useTexture.preload(`/textures/${book.folder}/${book.backCover}.jpg`);
+    
+    // Preload all pages
+    book.pictures.forEach(picture => {
+      useTexture.preload(`/textures/${book.folder}/${picture}.jpg`);
+    });
+  });
+};
+
+// Call preload function
+preloadAllTextures();
 
 const Page = ({ number, front, back, page, opened, bookClosed, ...props }) => {
   const [picture, picture2] = useTexture([
