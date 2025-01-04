@@ -49,7 +49,7 @@ function App() {
         Your browser does not support the video tag.
       </video>
       <Canvas shadows camera={{
-          position: [-0.5, 1, window.innerWidth > 800 ? 4 : 9],
+          position: [-0.5, 1, window.innerWidth > 800 ? 3 : 9],
           fov: 45,
         }}>
          
